@@ -5,12 +5,23 @@ import com.example.baseproject.model.remote.data.CountryResponse
 import com.example.baseproject.view.data.Country
 
 
-class CountryDiffCallback : DiffUtil.ItemCallback<Country>() {
-    override fun areItemsTheSame(oldItem: Country, newItem: Country): Boolean {
-        return oldItem.code == newItem.code
+class CountryDiffCallback(
+    private val oldList: List<Country>,
+    private val newList: List<Country>
+) : DiffUtil.Callback() {
+    override fun getOldListSize(): Int {
+        return oldList.size
     }
 
-    override fun areContentsTheSame(oldItem: Country, newItem: Country): Boolean {
-        return oldItem == newItem
+    override fun getNewListSize(): Int {
+        return newList.size
+    }
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition].code == newList[newItemPosition].code
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

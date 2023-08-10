@@ -2,14 +2,15 @@ package com.example.baseproject.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.baseproject.databinding.RowCountryBinding
 import com.example.baseproject.view.data.Country
 
-class CountriesAdapter: ListAdapter<Country, CountryViewHolder>(CountryDiffCallback()) {
+class CountriesAdapter: RecyclerView.Adapter<CountryViewHolder>() {
 
-    private val countries = ArrayList<Country>()
+    private var countries = ArrayList<Country>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
         val binding = RowCountryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -17,9 +18,10 @@ class CountriesAdapter: ListAdapter<Country, CountryViewHolder>(CountryDiffCallb
     }
 
     fun setData(newCountries: List<Country>) {
-        countries.clear()
-        countries.addAll(newCountries)
-        submitList(newCountries)
+        val callback = CountryDiffCallback(countries, newCountries)
+        val result = DiffUtil.calculateDiff(callback)
+        countries = newCountries as ArrayList<Country> // don't forget to update the backing list
+        result.dispatchUpdatesTo(this)
     }
 
     override fun getItemCount(): Int {
