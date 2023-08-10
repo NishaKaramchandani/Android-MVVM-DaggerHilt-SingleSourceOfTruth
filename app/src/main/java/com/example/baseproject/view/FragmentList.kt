@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -16,9 +17,11 @@ import com.example.baseproject.view.adapter.CountriesAdapter
 import com.example.baseproject.databinding.FragmentListBinding
 import com.example.baseproject.viewmodel.CountryListUiState
 import com.example.baseproject.viewmodel.ListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class FragmentList : Fragment() {
 
     private lateinit var binding: FragmentListBinding
@@ -29,19 +32,7 @@ class FragmentList : Fragment() {
         private const val TAG = "FragmentList"
     }
 
-    private lateinit var viewModel: ListViewModel
-    private lateinit var viewModelProvider: ViewModelProvider
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        viewModelProvider = ViewModelProvider(
-            requireActivity().viewModelStore,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )
-
-        viewModel = viewModelProvider[ListViewModel::class.java]
-    }
+    private val viewModel: ListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

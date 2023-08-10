@@ -2,10 +2,10 @@ package com.example.baseproject
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.baseproject.application.BaseApplication
 import com.example.baseproject.databinding.ActivityMainBinding
-import com.example.baseproject.di.DatabaseFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

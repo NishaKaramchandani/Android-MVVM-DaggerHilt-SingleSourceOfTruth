@@ -1,7 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -94,7 +95,7 @@ dependencies {
     //Room
     implementation("androidx.room:room-ktx:2.6.0-alpha02")
     implementation("androidx.room:room-runtime:2.6.0-alpha02")
-    ksp("androidx.room:room-compiler:2.6.0-alpha02")
+    kapt("androidx.room:room-compiler:2.6.0-alpha02")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
@@ -103,4 +104,8 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     testImplementation("io.mockk:mockk:1.12.7")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
+
+    //hilt-dagger
+    implementation("com.google.dagger:hilt-android:2.45")
+    kapt("com.google.dagger:hilt-android-compiler:2.45")
 }

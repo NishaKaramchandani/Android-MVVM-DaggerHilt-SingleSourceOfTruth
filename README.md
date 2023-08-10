@@ -1,7 +1,7 @@
 
 ## Implementation Details.
 - The app demonstrates a strong adherence to the MVVM Architecture, with its components thoughtfully organized into packages, ensuring modularity, scalability, and testability.
-- Manual DI
+- Dagger Hilt
 - Remote and Local data sources
 - Repository and Use Cases classes
 - Coroutines with Flow

@@ -1,27 +1,18 @@
 package com.example.baseproject.model.local
 
-import android.content.Context
-import com.example.baseproject.di.DatabaseFactory
 import com.example.baseproject.model.local.data.CountryEntity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class CountriesLocalDataSource(context: Context) {
-
-    private var countriesDao: CountriesDao? = DatabaseFactory.createDatabaseClient(context).countriesDao()
+class CountriesLocalDataSource @Inject constructor(private val countriesDao: CountriesDao) {
 
     fun insertCountry(countryEntity: CountryEntity) {
-        countriesDao?.insertCountryEntity(countryEntity)
+        countriesDao.insertCountryEntity(countryEntity)
     }
 
     fun insertAllCountries(countries: List<CountryEntity>) {
-        countriesDao?.insertAll(countries)
+        countriesDao.insertAll(countries)
     }
 
-    fun getAllCountries() = countriesDao?.getAllCountries()
+    fun getAllCountries() = countriesDao.getAllCountries()
 
-    fun destroy() {
-        DatabaseFactory.destroy()
-        countriesDao = null
-    }
 }

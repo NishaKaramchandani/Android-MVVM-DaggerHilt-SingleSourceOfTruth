@@ -5,5 +5,4 @@ import kotlinx.coroutines.flow.Flow
 
 interface CountriesRepository {
     suspend fun fetchAllCountries(): Flow<Result<List<Country>>>
-    fun destroy()
 }

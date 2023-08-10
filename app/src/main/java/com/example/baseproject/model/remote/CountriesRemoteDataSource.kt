@@ -1,28 +1,20 @@
 package com.example.baseproject.model.remote
 
-import com.example.baseproject.di.RetrofitClientFactory
 import com.example.baseproject.model.remote.data.CountryResponse
 import okhttp3.ResponseBody
-import retrofit2.Retrofit
 import java.io.IOException
+import javax.inject.Inject
 
-class CountriesRemoteDataSource {
-
-    private var retrofit: Retrofit? = RetrofitClientFactory.createRetrofitClient()
-    private var apiService: ApiService? = retrofit?.create(ApiService::class.java)
+class CountriesRemoteDataSource @Inject constructor(private val apiService: ApiService) {
 
     suspend fun fetchCountries(): Result<List<CountryResponse>> {
-        val countriesResponse = apiService?.getAllCountriesList()
-        if (countriesResponse?.isSuccessful == true) {
+        val countriesResponse = apiService.getAllCountriesList()
+        if (countriesResponse.isSuccessful) {
             return (countriesResponse.body()?.let { Result.success(it) }
                 ?: Result.failure(IOException("No data received.")))
         }
-        val error: ResponseBody? = countriesResponse?.errorBody()
+        val error: ResponseBody? = countriesResponse.errorBody()
         return Result.failure(IOException(error.toString()))
     }
 
-    fun destroy() {
-        retrofit = null
-        apiService = null
-    }
 }

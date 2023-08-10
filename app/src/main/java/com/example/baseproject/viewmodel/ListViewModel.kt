@@ -4,22 +4,22 @@ import android.app.Application
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.baseproject.R
-import com.example.baseproject.di.UseCaseFactory
+import com.example.baseproject.domain.FetchCountryListUseCase
 import com.example.baseproject.view.data.Country
-import kotlinx.coroutines.delay
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import java.net.UnknownHostException
+import javax.inject.Inject
 
-class ListViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val fetchCountryListUseCase = UseCaseFactory.createFetchCountriesUseCaseClient(application.applicationContext)
-
+@HiltViewModel
+class ListViewModel @Inject constructor(private val fetchCountryListUseCase: FetchCountryListUseCase) : ViewModel() {
     private val _countriesUiState: MutableSharedFlow<CountryListUiState> = MutableSharedFlow(replay = 1)
 
     val countriesUiState: SharedFlow<CountryListUiState> get() = _countriesUiState.asSharedFlow()
@@ -40,7 +40,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
             // Delay here to test loading state and simulate network latency.
             //delay(2000)
 
-            fetchCountryListUseCase()?.collectLatest { value: Result<List<Country>> ->
+            fetchCountryListUseCase().collectLatest { value: Result<List<Country>> ->
                 value.onSuccess { countries ->
                     if (countries.isNotEmpty()) {
                         _countriesUiState.emit(CountryListUiState.Success(countryList = countries))
@@ -59,10 +59,6 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        UseCaseFactory.destroy()
-    }
 }
 
 sealed class CountryListUiState {
