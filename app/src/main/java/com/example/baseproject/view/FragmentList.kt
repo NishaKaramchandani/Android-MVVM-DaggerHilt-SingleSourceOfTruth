@@ -60,7 +60,7 @@ class FragmentList : Fragment() {
                         is CountryListUiState.Loading -> showLoadingView()
                         is CountryListUiState.Success -> {
                             showListView()
-                            countriesAdapter.setData(it.countryList)
+                            countriesAdapter.differ.submitList(it.countryList)
                         }
                         is CountryListUiState.Error -> {
                             showErrorView(it.errorMessageId.toString())
